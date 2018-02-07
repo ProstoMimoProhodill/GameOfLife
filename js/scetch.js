@@ -8,6 +8,10 @@ var rows = 0;
 
 var point = [];
 var start = false;
+var infoBtn = true;
+var numAlive = 0;
+var numDead = 0;
+
 
 function setup(){
     createCanvas(windowWid, windowHei);
@@ -24,6 +28,8 @@ function setup(){
 }
 
 function draw(){
+    numAlive = 0;
+    numDead = 0;
     createGrid(indentionGlobal);
     for(let i=1;i<=colums;i++){
         for(let j=1;j<=rows;j++){
@@ -36,12 +42,14 @@ function draw(){
             for(let j=1;j<=rows;j++){
                 let neighbor = point[i][j].neighbor;
                 if(point[i][j].status=="alive"){
+                    numAlive++;
                     if((neighbor<2)||(neighbor>3)){
                         point[i][j].fill = 255;
                         point[i][j].status = "dead";
                     }
                 }
                 if(point[i][j].status=="dead"){
+                    numDead++;
                     if(neighbor==3){
                         point[i][j].fill = 0;
                         point[i][j].status = "alive";
@@ -50,6 +58,12 @@ function draw(){
             }
         }
 
+    }
+
+    if(infoBtn){
+        document.getElementById("info").innerHTML = "Alive cells: " + numAlive;    
+    }else{
+        document.getElementById("info").innerHTML = "Dead cells: " + numDead;    
     }
 }
 
@@ -153,6 +167,14 @@ function clearField(){
             point[i][j].status = "dead";
             point[i][j].fill = 255;
         }
+    }
+}
+
+function info(){
+    if(infoBtn){
+       infoBtn = false;
+    }else{
+        infoBtn = true;
     }
 }
 
